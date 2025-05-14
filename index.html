@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunar Date Checker</title>
+    <title>Is it Veggie Day?</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Lunar Date Checker</h1>
+        <h1>Is it Veggie Day?</h1>
         <div class="result-box">
             <h2>Today's Status</h2>
             <p id="todayStatus">Checking...</p>
@@ -16,6 +16,11 @@
         <div class="result-box">
             <h2>Next Lunar 1st or 15th</h2>
             <p id="nextDate">Calculating...</p>
+        </div>
+        <div class="result-box">
+            <h2>Calendar Export</h2>
+            <p>Download all lunar 1st and 15th dates for the current year as a calendar file.</p>
+            <button id="downloadCalendar" class="download-btn">Download Calendar</button>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.7/lunar.js"></script>
