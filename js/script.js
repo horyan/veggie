@@ -54,7 +54,7 @@ function generateICSContent() {
                 `BEGIN:VEVENT\n` +
                 `DTSTART:${eventDate}\n` +
                 `DTEND:${eventEndDate}\n` +
-                `SUMMARY:Lunar ${lunar.getDay() === 1 ? '1st' : '15th'} Day\n` +
+                `SUMMARY:Veggie Day 🥬🥕\n` +
                 `DESCRIPTION:Lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month\n` +
                 `END:VEVENT`
             );
@@ -67,7 +67,7 @@ function generateICSContent() {
            `PRODID:-//Lunar Calendar Events//EN\n` +
            `CALSCALE:GREGORIAN\n` +
            `METHOD:PUBLISH\n` +
-           `X-WR-CALNAME:Lunar Calendar Events\n` +
+           `X-WR-CALNAME:Veggie Days 🥬🥕\n` +
            `X-WR-TIMEZONE:UTC\n` +
            events.join('\n') +
            `\nEND:VCALENDAR`;
@@ -79,7 +79,7 @@ function downloadICS() {
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `lunar-calendar-events-${new Date().getFullYear()}.ics`;
+    link.download = `veggie-days-${new Date().getFullYear()}.ics`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -95,7 +95,7 @@ function updateUI() {
     // Check today's status
     if (isLunarFirstOrFifteenth(today)) {
         const lunar = Lunar.fromDate(today);
-        todayStatus.textContent = `Today (${formatDate(today)}) is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month.`;
+        todayStatus.textContent = `Today (${formatDate(today)}) is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month. 🥬🥕`;
         statusBox.classList.add('is-veggie-day');
         statusBox.classList.remove('is-not-veggie-day');
     } else {
