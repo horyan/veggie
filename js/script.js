@@ -90,13 +90,18 @@ function updateUI() {
     const today = new Date();
     const todayStatus = document.getElementById('todayStatus');
     const nextDate = document.getElementById('nextDate');
+    const statusBox = todayStatus.closest('.result-box');
 
     // Check today's status
     if (isLunarFirstOrFifteenth(today)) {
         const lunar = Lunar.fromDate(today);
         todayStatus.textContent = `Today (${formatDate(today)}) is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month.`;
+        statusBox.classList.add('is-veggie-day');
+        statusBox.classList.remove('is-not-veggie-day');
     } else {
         todayStatus.textContent = `Today (${formatDate(today)}) is not a lunar 1st or 15th day.`;
+        statusBox.classList.add('is-not-veggie-day');
+        statusBox.classList.remove('is-veggie-day');
     }
 
     // Find and display next lunar 1st or 15th

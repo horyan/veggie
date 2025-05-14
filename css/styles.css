@@ -35,6 +35,15 @@ h1 {
     padding: 1.5rem;
     border-radius: 10px;
     margin-bottom: 1.5rem;
+    transition: background 0.3s ease;
+}
+
+.result-box.is-veggie-day {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+.result-box.is-not-veggie-day {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
 }
 
 h2 {
