@@ -97,7 +97,7 @@ function updateUI() {
         const lunar = Lunar.fromDate(today);
         todayStatus.innerHTML = `<span class="status-yes">YES</span>
             <span class="date-text">${formatDate(today)}</span>
-            <span class="lunar-text">Lunar ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
+            <span class="lunar-text"><span class="lunar-text"><svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
         statusBox.classList.add('is-veggie-day');
         statusBox.classList.remove('is-not-veggie-day');
     } else {
@@ -113,7 +113,7 @@ function updateUI() {
         const lunar = Lunar.fromDate(nextLunarDate);
         const nextDateHeading = document.querySelector('#nextDateHeading');
         nextDateHeading.textContent = formatDate(nextLunarDate);
-        nextDate.innerHTML = `<span class="lunar-text">Lunar ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
+        nextDate.innerHTML = `<span class="lunar-text"><svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
     } else {
         const nextDateHeading = document.querySelector('#nextDateHeading');
         nextDateHeading.textContent = 'Could not determine next date';
