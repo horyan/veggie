@@ -95,11 +95,14 @@ function updateUI() {
     // Check today's status
     if (isLunarFirstOrFifteenth(today)) {
         const lunar = Lunar.fromDate(today);
-        todayStatus.textContent = `Today (${formatDate(today)}) is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month. 🥬🥕`;
+        todayStatus.innerHTML = `<span class="status-yes">YES</span>
+            <span class="date-text">${formatDate(today)}</span>
+            <span class="lunar-text">Lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month</span>`;
         statusBox.classList.add('is-veggie-day');
         statusBox.classList.remove('is-not-veggie-day');
     } else {
-        todayStatus.textContent = `Today (${formatDate(today)}) is not a lunar 1st or 15th day.`;
+        todayStatus.innerHTML = `<span class="status-no">NO</span>
+            <span class="date-text">${formatDate(today)}</span>`;
         statusBox.classList.add('is-not-veggie-day');
         statusBox.classList.remove('is-veggie-day');
     }
@@ -108,9 +111,13 @@ function updateUI() {
     const nextLunarDate = findNextLunarFirstOrFifteenth(today);
     if (nextLunarDate) {
         const lunar = Lunar.fromDate(nextLunarDate);
-        nextDate.textContent = `The next lunar ${lunar.getDay() === 1 ? '1st' : '15th'} will be on ${formatDate(nextLunarDate)}.`;
+        const nextDateHeading = document.querySelector('#nextDateHeading');
+        nextDateHeading.textContent = formatDate(nextLunarDate);
+        nextDate.innerHTML = `<span class="lunar-text">Next lunar ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
     } else {
-        nextDate.textContent = 'Could not determine the next lunar 1st or 15th date.';
+        const nextDateHeading = document.querySelector('#nextDateHeading');
+        nextDateHeading.textContent = 'Could not determine next date';
+        nextDate.textContent = '';
     }
 }
 

@@ -13,18 +13,13 @@
     <div class="container">
         <h1>Is it Veggie Day? 🥬🥕</h1>
         <div class="result-box">
-            <h2>Today's Verdict</h2>
             <p id="todayStatus">Checking...</p>
         </div>
         <div class="result-box">
-            <h2>Next Lunar 1st or 15th</h2>
-            <p id="nextDate">Calculating...</p>
+            <h2 id="nextDateHeading">Calculating...</h2>
+            <p id="nextDate"></p>
         </div>
-        <div class="result-box">
-            <h2>Calendar Export</h2>
-            <p>Download all lunar 1st and 15th dates for the current year as a calendar file.</p>
-            <button id="downloadCalendar" class="download-btn">Download Calendar</button>
-        </div>
+        <button id="downloadCalendar" class="download-btn">Download Calendar</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.7/lunar.js"></script>
     <script src="js/script.js"></script>
