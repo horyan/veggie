@@ -38,7 +38,7 @@ function formatDateForICS(date) {
 // Function to generate ICS content
 function generateICSContent() {
     const currentYear = new Date().getFullYear();
-    const startDate = new Date(currentYear, 0, 1); // January 1st of current year
+    const startDate = new Date(); // Start from today
     const endDate = new Date(currentYear, 11, 31); // December 31st of current year
     let currentDate = new Date(startDate);
     
@@ -97,7 +97,7 @@ function updateUI() {
         const lunar = Lunar.fromDate(today);
         todayStatus.innerHTML = `<span class="status-yes">YES</span>
             <span class="date-text">${formatDate(today)}</span>
-            <span class="lunar-text">Lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month</span>`;
+            <span class="lunar-text">Lunar ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
         statusBox.classList.add('is-veggie-day');
         statusBox.classList.remove('is-not-veggie-day');
     } else {
@@ -113,7 +113,7 @@ function updateUI() {
         const lunar = Lunar.fromDate(nextLunarDate);
         const nextDateHeading = document.querySelector('#nextDateHeading');
         nextDateHeading.textContent = formatDate(nextLunarDate);
-        nextDate.innerHTML = `<span class="lunar-text">Next lunar ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
+        nextDate.innerHTML = `<span class="lunar-text">Lunar ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
     } else {
         const nextDateHeading = document.querySelector('#nextDateHeading');
         nextDateHeading.textContent = 'Could not determine next date';
@@ -124,5 +124,6 @@ function updateUI() {
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
+    document.getElementById('calendarYear').textContent = `${new Date().getFullYear()} DATES`;
     document.getElementById('downloadCalendar').addEventListener('click', downloadICS);
 }); 

@@ -129,8 +129,14 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
     -webkit-tap-highlight-color: transparent;
+}
+
+.download-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
 }
 
 .download-btn:hover {
