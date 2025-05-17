@@ -1,12 +1,24 @@
 // Function to check if a date is lunar 1st or 15th
 function isLunarFirstOrFifteenth(date) {
-    const lunar = Lunar.fromDate(date);
+    // Ensure we're working with UTC to avoid timezone issues
+    const utcDate = new Date(Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+    ));
+    const lunar = Lunar.fromDate(utcDate);
     return lunar.getDay() === 1 || lunar.getDay() === 15;
 }
 
 // Function to find the next lunar 1st or 15th
 function findNextLunarFirstOrFifteenth(startDate) {
-    let currentDate = new Date(startDate);
+    // Ensure we're working with UTC to avoid timezone issues
+    const utcDate = new Date(Date.UTC(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate()
+    ));
+    let currentDate = new Date(utcDate);
     let daysChecked = 0;
     const maxDaysToCheck = 30; // Maximum days to look ahead
 
@@ -54,25 +66,17 @@ function generateICSContent() {
             const lunar = Lunar.fromDate(currentDate);
             const eventDate = formatDateForICS(currentDate);
             
-            // Add reminder event for the day before, starting at noon
-            const reminderDate = new Date(currentDate);
-            reminderDate.setDate(reminderDate.getDate() - 1);
-            reminderDate.setHours(12, 0, 0, 0); // Set to noon
-            const reminderEndDate = new Date(reminderDate);
-            reminderEndDate.setHours(18, 0, 0, 0); // Set to 6 PM
-            
             events.push(
-                `BEGIN:VEVENT\n` +
-                `DTSTART:${formatDateTimeForICS(reminderDate)}\n` +
-                `DTEND:${formatDateTimeForICS(reminderEndDate)}\n` +
-                `SUMMARY:Veggie Day Tomorrow 🥬🥕\n` +
-                `DESCRIPTION:Reminder: Tomorrow is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day\n` +
-                `END:VEVENT\n` +
                 `BEGIN:VEVENT\n` +
                 `DTSTART;VALUE=DATE:${eventDate}\n` +
                 `DTEND;VALUE=DATE:${formatDateForICS(new Date(currentDate.getTime() + 24 * 60 * 60 * 1000))}\n` +
                 `SUMMARY:Veggie Day 🥬🥕\n` +
                 `DESCRIPTION:Lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month\n` +
+                `BEGIN:VALARM\n` +
+                `ACTION:DISPLAY\n` +
+                `DESCRIPTION:Veggie Day Tomorrow\n` +
+                `TRIGGER:-PT12H\n` +
+                `END:VALARM\n` +
                 `END:VEVENT`
             );
         }
@@ -139,9 +143,28 @@ function updateUI() {
     }
 }
 
+// Function to test lunar date calculations
+function testLunarDates() {
+    // Test some known dates
+    const testDates = [
+        new Date(2024, 0, 11),  // Jan 11, 2024 - Lunar 1st
+        new Date(2024, 0, 25),  // Jan 25, 2024 - Lunar 15th
+        new Date(2024, 1, 10),  // Feb 10, 2024 - Lunar 1st
+        new Date(2024, 1, 24),  // Feb 24, 2024 - Lunar 15th
+    ];
+
+    console.log('Testing lunar date calculations:');
+    testDates.forEach(date => {
+        const lunar = Lunar.fromDate(date);
+        const isVeggieDay = isLunarFirstOrFifteenth(date);
+        console.log(`${date.toLocaleDateString()}: Lunar day ${lunar.getDay()}, isVeggieDay: ${isVeggieDay}`);
+    });
+}
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     document.getElementById('calendarYear').textContent = `${new Date().getFullYear()} DATES`;
     document.getElementById('downloadCalendar').addEventListener('click', downloadICS);
+    testLunarDates(); // Run the test
 }); 
