@@ -32,7 +32,7 @@ function formatDate(date) {
 
 // Function to format date for ICS
 function formatDateForICS(date) {
-    return date.toISOString().replace(/-|:|\.\d+/g, '');
+    return date.toISOString().split('T')[0].replace(/-/g, '');
 }
 
 // Function to generate ICS content
@@ -48,12 +48,22 @@ function generateICSContent() {
         if (isLunarFirstOrFifteenth(currentDate)) {
             const lunar = Lunar.fromDate(currentDate);
             const eventDate = formatDateForICS(currentDate);
-            const eventEndDate = formatDateForICS(new Date(currentDate.getTime() + 24 * 60 * 60 * 1000));
+            
+            // Add reminder event for the day before
+            const reminderDate = new Date(currentDate);
+            reminderDate.setDate(reminderDate.getDate() - 1);
+            const reminderEventDate = formatDateForICS(reminderDate);
             
             events.push(
                 `BEGIN:VEVENT\n` +
-                `DTSTART:${eventDate}\n` +
-                `DTEND:${eventEndDate}\n` +
+                `DTSTART;VALUE=DATE:${reminderEventDate}\n` +
+                `DTEND;VALUE=DATE:${formatDateForICS(new Date(reminderDate.getTime() + 24 * 60 * 60 * 1000))}\n` +
+                `SUMMARY:Veggie Day Tomorrow 🥬🥕\n` +
+                `DESCRIPTION:Reminder: Tomorrow is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day\n` +
+                `END:VEVENT\n` +
+                `BEGIN:VEVENT\n` +
+                `DTSTART;VALUE=DATE:${eventDate}\n` +
+                `DTEND;VALUE=DATE:${formatDateForICS(new Date(currentDate.getTime() + 24 * 60 * 60 * 1000))}\n` +
                 `SUMMARY:Veggie Day 🥬🥕\n` +
                 `DESCRIPTION:Lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day of the month\n` +
                 `END:VEVENT`
@@ -111,7 +121,10 @@ function updateUI() {
         const lunar = Lunar.fromDate(nextLunarDate);
         const nextDateHeading = document.querySelector('#nextDateHeading');
         nextDateHeading.textContent = formatDate(nextLunarDate);
-        nextDate.innerHTML = `<span class="lunar-text"><svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
+        const moonIcon = lunar.getDay() === 1 
+            ? `<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
+            : `<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>`;
+        nextDate.innerHTML = `<span class="lunar-text">${moonIcon} ${lunar.getDay() === 1 ? '1st' : '15th'}</span>`;
     } else {
         const nextDateHeading = document.querySelector('#nextDateHeading');
         nextDateHeading.textContent = 'Could not determine next date';
