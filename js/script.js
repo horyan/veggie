@@ -35,6 +35,11 @@ function formatDateForICS(date) {
     return date.toISOString().split('T')[0].replace(/-/g, '');
 }
 
+// Function to format datetime for ICS
+function formatDateTimeForICS(date) {
+    return date.toISOString().replace(/-|:|\.\d+/g, '');
+}
+
 // Function to generate ICS content
 function generateICSContent() {
     const currentYear = new Date().getFullYear();
@@ -49,15 +54,17 @@ function generateICSContent() {
             const lunar = Lunar.fromDate(currentDate);
             const eventDate = formatDateForICS(currentDate);
             
-            // Add reminder event for the day before
+            // Add reminder event for the day before, starting at noon
             const reminderDate = new Date(currentDate);
             reminderDate.setDate(reminderDate.getDate() - 1);
-            const reminderEventDate = formatDateForICS(reminderDate);
+            reminderDate.setHours(12, 0, 0, 0); // Set to noon
+            const reminderEndDate = new Date(reminderDate);
+            reminderEndDate.setHours(18, 0, 0, 0); // Set to 6 PM
             
             events.push(
                 `BEGIN:VEVENT\n` +
-                `DTSTART;VALUE=DATE:${reminderEventDate}\n` +
-                `DTEND;VALUE=DATE:${formatDateForICS(new Date(reminderDate.getTime() + 24 * 60 * 60 * 1000))}\n` +
+                `DTSTART:${formatDateTimeForICS(reminderDate)}\n` +
+                `DTEND:${formatDateTimeForICS(reminderEndDate)}\n` +
                 `SUMMARY:Veggie Day Tomorrow 🥬🥕\n` +
                 `DESCRIPTION:Reminder: Tomorrow is lunar ${lunar.getDay() === 1 ? '1st' : '15th'} day\n` +
                 `END:VEVENT\n` +
