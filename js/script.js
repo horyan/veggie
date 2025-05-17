@@ -1,24 +1,12 @@
 // Function to check if a date is lunar 1st or 15th
 function isLunarFirstOrFifteenth(date) {
-    // Ensure we're working with UTC to avoid timezone issues
-    const utcDate = new Date(Date.UTC(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-    ));
-    const lunar = Lunar.fromDate(utcDate);
+    const lunar = Lunar.fromDate(date);
     return lunar.getDay() === 1 || lunar.getDay() === 15;
 }
 
 // Function to find the next lunar 1st or 15th
 function findNextLunarFirstOrFifteenth(startDate) {
-    // Ensure we're working with UTC to avoid timezone issues
-    const utcDate = new Date(Date.UTC(
-        startDate.getFullYear(),
-        startDate.getMonth(),
-        startDate.getDate()
-    ));
-    let currentDate = new Date(utcDate);
+    let currentDate = new Date(startDate);
     let daysChecked = 0;
     const maxDaysToCheck = 30; // Maximum days to look ahead
 
@@ -143,28 +131,9 @@ function updateUI() {
     }
 }
 
-// Function to test lunar date calculations
-function testLunarDates() {
-    // Test some known dates
-    const testDates = [
-        new Date(2024, 0, 11),  // Jan 11, 2024 - Lunar 1st
-        new Date(2024, 0, 25),  // Jan 25, 2024 - Lunar 15th
-        new Date(2024, 1, 10),  // Feb 10, 2024 - Lunar 1st
-        new Date(2024, 1, 24),  // Feb 24, 2024 - Lunar 15th
-    ];
-
-    console.log('Testing lunar date calculations:');
-    testDates.forEach(date => {
-        const lunar = Lunar.fromDate(date);
-        const isVeggieDay = isLunarFirstOrFifteenth(date);
-        console.log(`${date.toLocaleDateString()}: Lunar day ${lunar.getDay()}, isVeggieDay: ${isVeggieDay}`);
-    });
-}
-
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     document.getElementById('calendarYear').textContent = `${new Date().getFullYear()} DATES`;
     document.getElementById('downloadCalendar').addEventListener('click', downloadICS);
-    testLunarDates(); // Run the test
 }); 
